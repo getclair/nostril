@@ -61,6 +61,8 @@ TAGS
 __pycache__/
 *.py[cod]
 *$py.class
+.venv/
+.pytest_cache/
 
 # Project-specific things to ignore:
 # .............................................................................
@@ -68,4 +70,4 @@ __pycache__/
 build
 dist
 README.html
-nostril.egg-info
+*.egg-info/

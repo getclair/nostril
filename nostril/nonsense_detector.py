@@ -675,7 +675,7 @@ def dataset_from_pickle(file):
     try:
         from . import ng
         sys.modules['ngrams'] = ng
-    except:
+    except Exception:
         pass
     with gzip.open(file, 'rb') as pickle_file:
         return pickle.load(pickle_file)
@@ -706,7 +706,7 @@ def _full_path(filename, subdir=None):
         try:
             calling_file = inspect.getfile(sys._getframe(1))
             thisdir = os.path.dirname(os.path.realpath(calling_file))
-        except:
+        except Exception:
             if '__file__' in globals():
                 thisdir = os.path.dirname(os.path.realpath(__file__))
             else:
@@ -791,7 +791,7 @@ def test_unlabeled(input, nonsense_tester, min_length=6, sense='valid',
                     # It's not supposed to be nonsense.
                     tn += not junk   # true negative
                     fp += junk       # false positive
-            except:
+            except Exception:
                 skipped += 1
 
         elapsed_time = time() - start
@@ -880,7 +880,7 @@ def test_labeled(input_file, nonsense_tester, min_length=6, trace_scores=False,
                             tp += 1
                         else:
                             fn_list.append(s)
-                except:
+                except Exception:
                     skipped += 1
             elapsed_time = time() - start
             if trace_scores:
