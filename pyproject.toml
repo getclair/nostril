@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nostril"
+description = "Nonsense String Evaluator"
+readme = "README.md"
+license = "LGPL-2.1-only"
+requires-python = ">=3.9"
+dynamic = ["version"]
+keywords = ["program-analysis", "text-processing", "gibberish-detection", "identifiers"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development",
+    "Topic :: Text Processing",
+]
+authors = [
+    { name = "Michael Hucka", email = "mhucka@caltech.edu" },
+]
+
+# Zero runtime dependencies
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/casics/nostril"
+Repository = "https://github.com/casics/nostril"
+
+[project.optional-dependencies]
+extras = ["tabulate>=0.9", "humanize>=4.0"]
+dev = ["pytest>=7", "tabulate>=0.9", "humanize>=4.0"]
+
+[project.scripts]
+nostril = "nostril.__main__:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "nostril.__version__.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["nostril"]
+
+[tool.setuptools.package-data]
+nostril = ["ngram_data.pklz"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["nostril", ".venv", "build", "dist"]
+markers = [
+    "slow: marks tests that process large datasets (deselect with '-m \"not slow\"')",
+]
