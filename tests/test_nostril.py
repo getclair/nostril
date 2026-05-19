@@ -3,7 +3,7 @@
 import os
 import pytest
 
-from nostril import nonsense, dataset_from_pickle
+from nostril import nonsense, generate_nonsense_detector, dataset_from_pickle
 from nostril import test_labeled as run_labeled_tests
 from nostril import test_unlabeled as run_unlabeled_tests
 
@@ -28,6 +28,20 @@ PROJECT_DIR = os.path.dirname(TESTS_DIR)
 ])
 def test_known_nonsense(s):
     assert nonsense(s), f"Expected nonsense=True for '{s}'"
+
+
+@pytest.mark.parametrize("s", [
+    'getProcessIdentifier',
+    'calculateTotalAmount',
+    'instanceof',
+    'StringBuilder',
+    'AbstractSyntaxTree',
+    'defaultConfigurationManager',
+    'parseHttpResponse',
+    'createNewElement',
+])
+def test_known_real(s):
+    assert not nonsense(s), f"Expected nonsense=False for '{s}'"
 
 
 # --- Labeled test cases ---
@@ -80,6 +94,21 @@ def test_github_identifiers():
         pytest.skip('GitHub identifiers corpus not found')
     tp, tn, fp, fn, skipped, elapsed = run_unlabeled_tests(path, nonsense)
     assert fp <= 10, f"Too many false positives on GitHub identifiers: {fp} (expected <= 10)"
+
+
+def test_labeled_cases_with_trace(capsys):
+    csv_path = os.path.join(TESTS_DIR, 'labeled-cases', 'real-not-real.csv')
+    fp_list, fn_list, count, skipped, elapsed = run_labeled_tests(
+        csv_path, nonsense, trace_scores=True,
+    )
+    captured = capsys.readouterr()
+    assert len(captured.out) > 0, "Expected trace output but got none"
+
+
+def test_trace_detector():
+    detector = generate_nonsense_detector(trace=True)
+    assert detector('getProcessIdentifier') is False
+    assert detector('lakdfqtajaklj') is True
 
 
 @pytest.mark.slow

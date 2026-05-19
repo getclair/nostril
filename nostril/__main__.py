@@ -63,15 +63,10 @@ def main():
         parser.error('Need a file or list of strings as input argument')
 
     if args.file:
-        file = args.file
-        if os.path.exists(file):
-            with open(file) as f:
-                analyze(f.readlines(), args.trace)
-        elif os.path.exists(os.path.join(os.getcwd(), file)):
-            with open(os.path.join(os.getcwd(), file)) as f:
-                analyze(f.readlines(), args.trace)
-        else:
-            raise ValueError('Cannot find file "{}"'.format(file))
+        if not os.path.exists(args.file):
+            parser.error('Cannot find file "{}"'.format(args.file))
+        with open(args.file) as f:
+            analyze(f.readlines(), args.trace)
     else:
         analyze(args.strings, args.trace)
 

@@ -28,6 +28,9 @@ authors = [
     { name = "Michael Hucka", email = "mhucka@caltech.edu" },
 ]
 
+# Zero runtime dependencies
+dependencies = []
+
 [project.urls]
 Homepage = "https://github.com/casics/nostril"
 Repository = "https://github.com/casics/nostril"
